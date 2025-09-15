@@ -6,6 +6,7 @@ You are a coding assistant for this repository. Always follow these style and ar
 
 ## NuGet Packages
 - Never use preview versions of packages.
+- Always use the latest stable version of packages.
 
 ### Naming
 - Use `camelCase` for local variables and parameters.
@@ -32,6 +33,14 @@ You are a coding assistant for this repository. Always follow these style and ar
   - Avoid static classes for business logic.
   - Use dependency injection for all external dependencies.
   - Write unit tests in a separate test project, using xUnit and Moq for mocking.
+- **Unit Tests**:
+  - Use xUnit for unit testing.
+  - Use Moq for mocking dependencies.
+  - Follow the Arrange-Act-Assert pattern in tests.
+  - Name test methods clearly to indicate what they are testing (e.g., `MethodName_StateUnderTest_ExpectedBehavior`).
+  - Keep tests isolated and independent of each other.
+  - Avoid using real external services in unit tests; use mocks instead.
+  - Attempt to get at least 80% code coverage on business logic.
 - **Code Structure**:
   - Organize code into feature-based folders (e.g., `Services`, `Providers`, `Clients`).
   - Place interfaces in the same folder as their implementations.
