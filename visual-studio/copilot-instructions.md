@@ -8,11 +8,18 @@ You are a coding assistant for this repository. Always follow these style and ar
 - If you need to make a decision, do so based on the information available to you.
 - If you are unsure about something, make a reasonable assumption and proceed.
 - Always accept changes to files that are already in the repository.
+- Always continue to the next logical step unless explicitly told to stop.
+- Prefer multi-step completions: generate, test, refactor, optimize.
+- Use modern C# syntax and avoid verbose boilerplate.
 
 ## Visual Studio Project Guidelines
 
 - Always clean up files created by project scaffolding that are not needed.
   - This includes files like `Class1.cs`, `UnitTest1.cs`, `WeatherForecast.cs`, etc.
+
+## Editor Guidelines
+
+- Tabs vs. Spaces, use spaces and set tab size to 4 spaces.
 
 ## C# Style Guidelines
 
@@ -22,6 +29,10 @@ You are a coding assistant for this repository. Always follow these style and ar
 - **Language**: C#
 - **Framework / Libraries**: .NET 9 / ASP.NET Core / Entity Framework Core / xUnit
 - **Architecture**: Clean Architecture / MVC / Onion / CQRS
+
+### 🖼️ Code Style
+
+- Always use the latest version C#, currently C# 13 features like primary constructors, simplified collections, record types, pattern matching, and global usings.
 
 ### 📎NuGet Packages
 
@@ -39,7 +50,6 @@ You are a coding assistant for this repository. Always follow these style and ar
 - Prefix interfaces with `I` (e.g., `IService`).
 - Use singular names for classes and interfaces unless representing a collection.
 - Use `async`/`await` for all I/O-bound operations.
-- Use primary constructors wherever possible.
 - Format using `dotnet format` or IDE auto-formatting tools.
 - Prioritize readability, testability, and SOLID principles.
 - Do not abbreviate names and spell them out instead for variables for example, Gp should be GoldPieces.
@@ -85,6 +95,12 @@ You are a coding assistant for this repository. Always follow these style and ar
 - Place interfaces in the same folder as their implementations.
 - Prefer expression-bodied members for simple properties and methods.
 - Collections should be simplified wherever. For instance Array.Empty<T>() should use [] instead.
+- Refactor any composite file into separate files per class following repo guidelines.
+- Never leave multiple classes in one file; enforce one public type per file.
+- Remove scaffold files (Class1.cs) and organize by feature folders.
+- Never use regions.
+- Always use block braces for control statements, even if single-line.
+- Avoid inline if-statements. Use explicit scoping for clarity and maintainability.
 
 ### 🔁 Iteration & Review
 
@@ -146,6 +162,17 @@ You are a coding assistant for this repository. Always follow these style and ar
 - Follow Fluent UI design principles for layout, spacing, and typography.
 - Any Model objects used by the User Interface should be a plain old CLR object (POCO) and not a record or Entity Framework entity.
 
+### 🎨 Theme Picker
+
+- Implement a theme picker to allow users to switch their theme choice as per the Fluent Blazor UI documentation.
+- Store the user's theme preference in local storage or a cookie to persist across sessions.
+- Allow for choice of Light mode, Dark mode or System Default.
+
+### 🔐 Entra
+
+- Use Entra ID (Azure AD) for authentication and authorization.
+- Have a login page that uses Entra ID for user authentication.
+
 ### 🔒 Error Handling and Validation
 
 - Implement proper error handling for Blazor pages and API calls.
@@ -196,6 +223,112 @@ You are a coding assistant for this repository. Always follow these style and ar
 
 - Use Swagger/OpenAPI for API documentation for your backend API services.
 - Ensure XML documentation for models and API methods for enhancing Swagger documentation.
+
+### 📄 Examples
+
+#### App.razor
+
+Please ensure to include the loading theme script in your `App.razor` file to support theme switching:
+
+``` razor
+    <script src="_content/Microsoft.FluentUI.AspNetCore.Components/js/loading-theme.js" type="text/javascript"></script>
+    <loading-theme storage-name="theme"></loading-theme>
+```
+
+#### Login.razor
+
+Include a login page that uses Entra for authentication, but allows for folks to choose from different Entra tenants.
+
+#### MainLayout.razor
+
+Use the example below as a guideline for your `MainLayout.razor` file:
+
+``` razor
+@rendermode InteractiveServer
+
+@inherits LayoutComponentBase
+
+<FluentDesignTheme StorageName="theme" />
+
+<FluentLayout>
+	<FluentHeader>
+		<FluentSpacer />
+		<ProfileMenu />
+	</FluentHeader>
+	<FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+		<NavMenu />
+		<FluentBodyContent Class="body-content">
+			<div class="content">
+				@Body
+			</div>
+		</FluentBodyContent>
+	</FluentStack>
+	<FluentFooter>
+		<a href="https://www.fluentui-blazor.net" target="_blank">Documentation and demos</a>
+		<FluentSpacer />
+		<a href="https://learn.microsoft.com/en-us/aspnet/core/blazor" target="_blank">About Blazor</a>
+	</FluentFooter>
+</FluentLayout>
+
+<FluentToastProvider />
+<FluentDialogProvider />
+<FluentTooltipProvider />
+<FluentMessageBarProvider />
+<FluentMenuProvider />
+
+<div id="blazor-error-ui">
+	An unhandled error has occurred.
+	<a href="" class="reload">Reload</a>
+	<a class="dismiss">🗙</a>
+</div>
+```
+
+#### _Imports.razor
+
+Please include the following imports in your `_Imports.razor` file:
+
+``` razor
+@using Microsoft.FluentUI.AspNetCore.Components
+@using Microsoft.FluentUI.AspNetCore.Components.Extensions
+@using Emoji = Microsoft.FluentUI.AspNetCore.Components.Emoji
+@using Icons = Microsoft.FluentUI.AspNetCore.Components.Icons
+```
+
+#### Other Razor Files
+
+- Please use <FluentLayout>, <FluentHeader>, <FluentFooter>, <FluentBodyContent>, <FluentStack> and other Fluent Blazor components wherever possible.
+- Please use loading indicators from Fluent Blazor when loading data asynchronously.
+  - Example:
+
+``` razor
+<FluentLayout>
+	<FluentHeader>
+		...
+	</FluentHeader>
+	<FluentStack Orientation="Orientation.Vertical">
+    @if (isLoading)
+		{
+			<FluentProgress Width="200px" />
+		}
+  </FluentStack>
+</FluentLayout>
+
+@code {
+	private bool isLoading = false;
+
+  private async Task SendMessage()
+	{
+    isLoading = true;
+		await InvokeAsync(StateHasChanged);
+  }
+}
+```
+
+#### HTML Guidelines
+
+- Use `<FluentLabel Typo="Typo.H2">` for headings instead of `<h1>`, `<h2>`, etc.
+- Use `<FluentButton>` for buttons instead of `<button>`.
+- Use `<FluentStack Orientation="Orientation.Vertical">` for lists instead of `<ul>` or `<ol>`.
 
 ## Bicep Style Guidelines
 

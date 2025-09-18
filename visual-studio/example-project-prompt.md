@@ -7,12 +7,12 @@ Create a Dungeons and Dragons 2024 random treasure generator.
 
 ## Data Content
 
-- Use the art-objects.md, gemstones.md and magic-items.md markdown files located in the data folder here.
-- Migrate these files from markdown to json so they are easier to serialize and deserialize by the seed.
-- These files are the data sets for the chance of getting those items in each of those categories.
-- Include all of the content in each of the markdown files.
-- Migrate these markdown files to a format optimized for reading in and seeding the database with.
-- Please expand the seed generation using these markdown files.
+- Use the art-objects.md, gemstones.md and magic-items.md markdown files located in the data folder.
+    - Migrate these files from markdown to json so they are easier to serialize and deserialize by the seed.
+    - These files are the data sets for the chance of getting those items in each of those categories.
+    - Please migrate the entire file(s) from markdown to json.
+    - For the json files please set them in the project settings to "Content" and "Copy Always" and reference them from there vs. trying to reference them directly.
+- Please use the json files to deserialize and use into the database seed for the application.
 
 ## Business Requirements
 
