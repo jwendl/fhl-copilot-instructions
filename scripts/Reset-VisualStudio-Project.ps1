@@ -14,7 +14,6 @@ param (
 # $rootPath = "C:\Source\GitHub\dnd-treasure-generator"
 # $oneDrivePath = "C:\Users\jwendl\OneDrive - jwendl.net\Documents\RolePlaying\Dungeons and Dragons\Markdown"
 $gitHubPath = "$rootPath\.github"
-$dataPath = "$rootPath\data"
 
 # Delete all files in root path
 Remove-Item -Path "$rootPath\*" -Recurse -Force
@@ -27,10 +26,6 @@ $dotnetVersion = "net9.0"
 # Create the directories if they don't exist
 if (!(Test-Path $gitHubPath)) {
     New-Item -ItemType Directory -Path $gitHubPath | Out-Null
-}
-
-if (!(Test-Path $dataPath)) {
-    New-Item -ItemType Directory -Path $dataPath | Out-Null
 }
 
 if (!(Test-Path $solutionPath)) {
@@ -63,8 +58,26 @@ dotnet sln "$solutionFullPath" add "$solutionName.Data/$solutionName.Data.csproj
 dotnet sln "$solutionFullPath" add "$solutionName.Tests/$solutionName.Tests.csproj"
 Write-Host "✅ Added projects to solution"
 
+# Add gitignores to project(s)
+$gitIgnoreUrl = "https://raw.githubusercontent.com/github/gitignore/main/VisualStudio.gitignore"
+Invoke-WebRequest -Uri $gitIgnoreUrl -OutFile "$solutionName.Web\.gitignore"
+Invoke-WebRequest -Uri $gitIgnoreUrl -OutFile "$solutionName.Data\.gitignore"
+Invoke-WebRequest -Uri $gitIgnoreUrl -OutFile "$solutionName.Tests\.gitignore"
+Write-Host "✅ Downloaded .gitignore files for each project"
+
 # Copy data files
-Copy-Item -Path "$oneDrivePath\*.md" -Destination "$dataPath" -Force
+if (!(Test-Path "$solutionName.Data\Data\")) {
+    New-Item -ItemType Directory -Path "$solutionName.Data\Data\" | Out-Null
+    New-Item -ItemType Directory -Path "$solutionName.Data\Data\Markdown" | Out-Null
+}
+
+Copy-Item -Path "$oneDrivePath\*.md" -Destination "$solutionName.Data\Data\Markdown" -Force
+
+# Add files to git workspace
+git init --initial-branch=main
+git add .
+git commit -m "Initial solution with data folder(s)."
+Write-Host "✅ Initialized git repository and made initial commit"
 
 # Open the solution in Visual Studio
 Start-Process "devenv.exe" "$solutionFullPath"

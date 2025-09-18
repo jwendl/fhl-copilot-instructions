@@ -9,6 +9,11 @@ You are a coding assistant for this repository. Always follow these style and ar
 - If you are unsure about something, make a reasonable assumption and proceed.
 - Always accept changes to files that are already in the repository.
 
+## Visual Studio Project Guidelines
+
+- Always clean up files created by project scaffolding that are not needed.
+  - This includes files like `Class1.cs`, `UnitTest1.cs`, `WeatherForecast.cs`, etc.
+
 ## C# Style Guidelines
 
 ### 🧠 Context
@@ -21,11 +26,13 @@ You are a coding assistant for this repository. Always follow these style and ar
 ### 📎NuGet Packages
 
 - Never use preview versions of packages.
-- Always use the latest stable version of packages.
+- Always use the latest stable version of each package.
+- Right now use versions compatible with .NET 9.0.9.
 
 ### 🔧 Naming
 
 - Always adhere to single responsibility and prioritize discoverability.
+- Please put classes in separate files and folders based on their functionality.
 - Use C#-idiomatic patterns and follow .NET coding conventions.
 - Use `camelCase` for local variables and parameters.
 - Use `PascalCase` for class, interface, enum, property, and method names.
@@ -35,6 +42,7 @@ You are a coding assistant for this repository. Always follow these style and ar
 - Use primary constructors wherever possible.
 - Format using `dotnet format` or IDE auto-formatting tools.
 - Prioritize readability, testability, and SOLID principles.
+- Do not abbreviate names and spell them out instead for variables for example, Gp should be GoldPieces.
 - Name variables explicitly and descriptively so their purpose is clear from the name (e.g., `var myServiceClient = new MyServiceClient();`, `var releaseAuditResults = ...;`, `var userDisplayName = ...;`). Avoid generic names like `data`, `item`, or `value` unless context is extremely clear.
 - **Inheritance and Interfaces**:
   - Always place inherited classes and implemented interfaces on a new line, not on the same line as the class name.
@@ -76,6 +84,7 @@ You are a coding assistant for this repository. Always follow these style and ar
 - Organize code into feature-based folders (e.g., `Services`, `Providers`, `Clients`).
 - Place interfaces in the same folder as their implementations.
 - Prefer expression-bodied members for simple properties and methods.
+- Collections should be simplified wherever. For instance Array.Empty<T>() should use [] instead.
 
 ### 🔁 Iteration & Review
 
@@ -84,30 +93,6 @@ You are a coding assistant for this repository. Always follow these style and ar
 - Use /// XML documentation comments to clarify intent for Copilot and future devs.
 - Use Rider or Visual Studio code inspections to catch violations early.
 
-### 📁 File Structure
-
-Use this structure as a guide when creating or updating files:
-
-```text
-src/
-  Api/
-  Application/
-    Commands/
-    Queries/
-    Services/
-    Interfaces/
-  Domain/
-    Entities/
-    Enums/
-    ValueObjects/
-  Infrastructure/
-    Persistence/
-    Services/
-tests/
-  Unit/
-  Integration/
-```
-
 ### ❔ Other
 
 - Enable nullable reference types.
@@ -115,23 +100,11 @@ tests/
 - Use explicit types when the type is not clear from the right-hand side.
 - Use `readonly` for fields that are not reassigned after construction.
 
-### 📚 References
-
-- [Microsoft C# Coding Conventions](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
-- [ASP.NET Core Documentation](https://learn.microsoft.com/en-us/aspnet/core/?view=aspnetcore-8.0)
-- [Entity Framework Core Docs](https://learn.microsoft.com/en-us/ef/core/)
-- [MediatR GitHub](https://github.com/jbogard/MediatR)
-- [AutoMapper Documentation](https://automapper.org/)
-- [xUnit Documentation](https://xunit.net/)
-- [FluentValidation](https://docs.fluentvalidation.net/)
-- [Serilog Docs](https://serilog.net/)
-- [Clean Architecture in .NET (by Jason Taylor)](https://github.com/jasontaylordev/CleanArchitecture)
-
 ## Entity Framework Core Guidelines
 
-### 🐛 Local Debugging
+### 🐛 General Guidelines
 
-- Use InMemoryDatabase for local development and unit tests.
+- Use InMemory database for local development with Entity Framework and SQL tasks and unit tests.
 - Use SQL Server / Azure SQL for staging and production environments.
 - Use migrations to manage database schema changes.
 
@@ -143,6 +116,11 @@ tests/
 - **Language**: C#
 - **Framework / Libraries**: .NET 9
 - **Architecture**: Clean Architecture
+
+### 🎲 General Guidelines
+
+- Always use Fluent Blazor in this nuget package Microsoft.FluentUI.AspNetCore.Components components for UI consistency and styling.
+- Use Fluent Blazor Icons for all icons from this nuget package Microsoft.FluentUI.AspNetCore.Components.Icons.
 
 ### 🔧 Naming
 
@@ -157,8 +135,16 @@ tests/
 - Leverage Dependency Injection for services in Blazor.
 - Structure Blazor components and services following Separation of Concerns.
 - Always use the latest version C#, currently C# 13 features like record types, pattern matching, and global usings.
-- Use Fluent Blazor components for UI consistency and styling.
+- Always use Fluent Blazor components for UI consistency and styling.
 - When creating a project and using dotnet new use blazor as the template.
+
+### 🧩 Fluent Blazor Guidelines
+
+- Use enumerations when they exist. For example use Orientation.Horizontal instead of "Horizontal".
+- Attempt to use a Fluent Blazor component before creating a custom one.
+- Use Fluent Blazor components for common UI elements like buttons, forms, modals, and navigation.
+- Follow Fluent UI design principles for layout, spacing, and typography.
+- Any Model objects used by the User Interface should be a plain old CLR object (POCO) and not a record or Entity Framework entity.
 
 ### 🔒 Error Handling and Validation
 
@@ -278,6 +264,19 @@ tests/
 - Use outputs to expose resource IDs and connection strings as needed.
 - Add comments to describe complex logic or resource intent.
 - Use `local.bicepparam` for environment-specific values.
+
+## 📚 References
+
+- [Microsoft C# Coding Conventions](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
+- [ASP.NET Core Documentation](https://learn.microsoft.com/en-us/aspnet/core/?view=aspnetcore-8.0)
+- [Entity Framework Core Docs](https://learn.microsoft.com/en-us/ef/core/)
+- [AutoMapper Documentation](https://automapper.org/)
+- [xUnit Documentation](https://xunit.net/)
+- [FluentValidation](https://docs.fluentvalidation.net/)
+- [Fluent Blazor](https://www.fluentui-blazor.net/)
+- [Serilog Docs](https://serilog.net/)
+- [Clean Architecture in .NET (by Jason Taylor)](https://github.com/jasontaylordev/CleanArchitecture)
+- [Bicep Documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/)
 
 ---
 
