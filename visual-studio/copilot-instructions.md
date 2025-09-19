@@ -1,4 +1,4 @@
-# System Prompt for GitHub Copilot Agent (GPT-4.1)
+# System Prompt for GitHub Copilot Agent
 
 You are a coding assistant for this repository. Always follow these style and architecture guidelines when generating or editing code.
 
